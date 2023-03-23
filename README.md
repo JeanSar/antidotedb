@@ -13,8 +13,6 @@ Ce tutoriel vous permettra de mettre en place des instances de bases [AntidoteDB
 
 Nous souhaitons déployer la configuration illustrée comme suit :
 
-```
-
 ```mermaid
 flowchart LR
     subgraph Clients
