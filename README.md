@@ -1,92 +1,148 @@
-# tp-crdts-antidotedb
+# TP CRDTs : réalisation d'un Scrum Task Board _via_ AntidoteDB 
+
+L'objectif de ce TP est de vous familiariser avec une solution basée sur les CRDTs ([Conflict-free Replicated Data Types](https://hal.inria.fr/inria-00609399v1/document)) à travers le développement d'une applicaton de gestion de tâches. 
+Cette application se présentera sous la forme d'une application Web permettant de visualiser et modifier des tâches à travers un 'Scrum Board'.
 
 
+Pour réaliser cette application, vous réaliserez dans un premier temps le tutoriel 'AntidoteDB' qui vous permettra de mettre en place l'environnement nécessaire au développement de l'application
 
-## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+# 1. Mise en place des instances d'AntidoteDB
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Ce tutoriel vous permettra de mettre en place des instances de bases [AntidoteDB](https://www.antidotedb.eu/) _via_ une de ses API, en l'occurence l'API Javascript. 
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Nous souhaitons déployer la configuration illustrée comme suit :
 
 ```
-cd existing_repo
-git remote add origin https://forge.univ-lyon1.fr/ens-tiw8/tp-crdts-antidotedb.git
-git branch -M main
-git push -uf origin main
+
+```mermaid
+flowchart LR
+    subgraph Clients
+    Shell1
+    Shell2
+    Shell3
+    end
+    Shell1 --> Server
+    Shell2 --> Server
+    Shell3 --> Server
+    Server --> Antidote1
+    Server --> Antidote2
+    Server --> Antidote3
+    subgraph Databases
+    Antidote1 <-->|Replication| Antidote2
+    Antidote1 <-->|Replication| Antidote3
+    Antidote2 <-->|Replication| Antidote3
+    end
 ```
 
-## Integrate with your tools
+## 1.1 Prérequis
+Ce tutoriel nécessite en prérequis l'installation de :
 
-- [ ] [Set up project integrations](https://forge.univ-lyon1.fr/ens-tiw8/tp-crdts-antidotedb/-/settings/integrations)
+* [Docker](https://docs.docker.com/engine/installation/)
+* [docker-compose](https://docs.docker.com/compose/install/)
+* [node.js][nodejs], [npm][npm], [Antidote](https://antidotedb.gitbook.io/documentation/quickstart).
 
-## Collaborate with your team
+et la récupération du projet :
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+`git clone https://forge.univ-lyon1.fr/ens-tiw8/tp-crdts-antidotedb.git`
 
-## Test and Deploy
 
-Use the built-in continuous integration in GitLab.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### 1.2 Configuration
+A la racine du projet, lancer sa construction : `make` (or `npm install`).  
 
-***
+Le lancement d'un cluster local de _Docker containers_: `make run`.  
 
-# Editing this README
+Pour pouvoir lancer le déploiement en local d'AntidoteDB, modifiez le fichier docker/docker-antidote.yml` pour déclarer une troisième instance de base _AntidoteDB_.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Modifier le fichier de configuration d'AntidoteDB (`./config.js`) pour déclarer cette troisième instance.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Une fois les fichiers modifiés, lancer le déploiement  _via_ la commande `docker-compose -f docker/docker-antidote.yml up`.
 
-## Name
-Choose a self-explaining name for your project.
+Lancer ensuite le serveur Web _via_ la commande `DEBUG=antidote-web-shell:* npm start`.
+Si tout s'est bien passé, vous devrier avoir l'affichage suivant à l'adresse  `localhost:3000`:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+![Affichage navigateur](./images/config.png)  
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### 1.3 Test
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+#### Test de la synchronisation après mise à jour
+ 
+Afin de tester la configuration que vous venez de déployer, vous avez la possibilité d'utiliser des primitives déjà implémentées qui vont vous permettre :
+ 
+ - d'afficher un compteur, de l'incrémenter ou de le décrémmenter,
+ 
+ ```
+ counter:
+    count inc <counter_id>
+    count dec <counter_id>
+    count get <counter_id> 
+```
+ 
+ - d'afficher une liste d'éléments, d'ajouter ou de retirer un élement de la liste.
+ 
+```
+add-wins set:
+    set add <set_id> <value>
+    set remove <set_id> <value>
+    set get <set_id>
+``` 
+```
+Tester ces primitives tout en observant le processus de synchronisation (Pour un ajout ou un incrément, faire des 'get' sur les 3 instances).
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+#### Test de la synchronisation après déconnexion
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Pour finir, il vous reste à observer ce qui se passe quand un noeud se déconnecte, que des mises à jour entre les autres noeuds se produisent pendant cette déconnexion, et comment la synchronisation se fait au retour (reconnexion) du noeud. 
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Pour simuler des déconnexions, vous allez réaliser des partitions du réseau (en cliquant sur "Create partition") et pour simuler des reconnexions, vous allez lancer la fusion des CRDTs (en cliquant sur "Heal partition"). 
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+# 2. Réalisation du Scrum Board
 
-## License
-For open source projects, say how it is licensed.
+Maintenant que vous maîtrisez AntidoteDB, vous allez vous attaquer à la couche applicative qui vous permettra de gérer un Scrum Board déployé sur 3 instances d'AntidoteDB.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+**Au niveau métier**, une tâche contient :
+
+- **un titre** que l'on supposera unique dans la liste des tâches,
+- **Une brève description** que l'on supposera de moins de 120 caractères,
+- **Un niveau de priorité** : 'low', 'medium', 'high',
+- **Une deadline** (cf [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date),
+- **Un statut** :'todo', 'doing', 'done',
+- **Un utilisateur en charge de la tâche** que l'on supposera être une chaine de caractères contenant le nom et le prénom de l'utilisateur.
+
+Servez-vous du code fourni comme point de départ dans les fichiers [server file](app.js) et [client file](public/js/script-tasks.js) pour implémenter les fonctionnalités suivantes:
+
+* Ajouter une nouvelle commande `tasks add` qui prend un titre de tâche (qui est supposé unique), description de tâche, un niveau de priorité ('low', 'medium', 'high'), une deadline, un statut et un utilisateur comme argument et crée une nouvelle tâche dans la base,
+* Ajouter une nouvelle commande `tasks get` qui prend un titre de tâche en argument et qui affiche les informations sur la tâche,
+* Ajouter une nouvelle commande `tasks remove` qui prend un titre de tâche en argument et qui supprime la tâche de la base,
+* Ajouter une nouvelle commande `tasks list` qui affiche toutes les tâches,
+* Ajouter une nouvelle commande `tasks assign` qui prend un titre de tâche et un nom/prénom d'utilisateur en argument et qui met à jour la tâche en base,
+* Ajouter une nouvelle commande `tasks status` qui prend un titre de tâche et un statut ('todo', 'doing', 'done') comme arguement et qui met la tâche à jour en base.
+
+L'application est accessible ici : [http://localhost:3000/tasks](http://localhost:3000/tasks)
+
+**Au niveau de l'interface graphique**
+* Afficher les listes de tâches sur l'interface _via_ la fonction `renderList` (en ayant pensé à supprimer le code exemple).
+* Implémenter toutes les fonctionnalités pour une visualisation et un usage graphique du _scrum board_.
+
+### Resources utiles:
+* [API](API.md)
+* [Antidote API ts](https://antidotedb.github.io/antidote_ts_client/)
+* [AntidoteDB source code](https://github.com/AntidoteDB/antidote)
+* [AntidoteDB Documentation](https://antidotedb.gitbook.io/documentation/)
+* [Antidote Docker reference](https://github.com/AntidoteDB/docker-antidote/blob/master/README.md)
+
+## Credits
+
+[RainbowFS][rainbowfs] and [LightKone][lightkone] research projects.
+
+ [antidote]: https://www.antidotedb.eu/
+ [rainbowfs]: http://rainbowfs.lip6.fr/
+ [lightkone]: https://www.lightkone.eu/
+ [nodejs]: https://nodejs.org/
+ [npm]: https://www.npmjs.com/
+ [antidote-setup]: https://antidotedb.gitbook.io/documentation/overview/installation
+
