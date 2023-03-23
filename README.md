@@ -89,7 +89,7 @@ add-wins set:
     set remove <set_id> <value>
     set get <set_id>
 ``` 
-```
+
 Tester ces primitives tout en observant le processus de synchronisation (Pour un ajout ou un incrément, faire des 'get' sur les 3 instances).
 
 #### Test de la synchronisation après déconnexion
