@@ -100,9 +100,13 @@ Pour finir, il vous reste à observer ce qui se passe quand un noeud se déconne
 
 Pour simuler des déconnexions, vous allez réaliser des partitions du réseau (en cliquant sur "Create partition") et pour simuler des reconnexions, vous allez lancer la fusion des CRDTs (en cliquant sur "Heal partition"). 
 
-
-
 # 2. Réalisation du Scrum Board
+
+#### Préliminaire
+
+Analyser les fichiers `./antidote-web-shell/public/script.js` et `./antidote-web-shell/public/script-task.js`et ajouter les commentaires nécessaires à la compréhension des fichiers.
+
+#### Cahier des charges
 
 Maintenant que vous maîtrisez AntidoteDB, vous allez vous attaquer à la couche applicative qui vous permettra de gérer un Scrum Board déployé sur 3 instances d'AntidoteDB.
 
