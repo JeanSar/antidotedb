@@ -49,6 +49,8 @@ et la récupération du projet :
 
 
 ### 1.2 Configuration
+Assurez-vous qu'un 'Docker daemon' est bien lancé;
+
 A la racine du projet, lancer sa construction : `make` (or `npm install`).  
 
 Pour pouvoir lancer le déploiement en local d'AntidoteDB, modifiez le fichier docker/docker-antidote.yml` pour déclarer une troisième instance de base _AntidoteDB_.
@@ -62,7 +64,7 @@ Une fois les fichiers modifiés, lancer le déploiement  _via_ la commande `dock
 Lancer ensuite le serveur Web _via_ la commande `DEBUG=antidote-web-shell:* npm start`.
 Si tout s'est bien passé, vous devrier avoir l'affichage suivant à l'adresse  `localhost:3000`:
 
-![Affichage navigateur](./images/config.png)  
+![Affichage navigateur](./images/interface_init.png)  
 
 
 ### 1.3 Test
@@ -129,7 +131,7 @@ L'application est accessible ici : [http://localhost:3000/tasks](http://localhos
 * Implémenter toutes les fonctionnalités pour une visualisation et un usage graphique du _scrum board_.
 
 Vous pourrez alors avoir un rendu de la forme :
-[scrum board](./images/scrum_board.png)
+![scrum board](./images/scrum_board.png)
 
 
 
