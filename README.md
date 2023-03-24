@@ -38,7 +38,9 @@ Ce tutoriel nécessite en prérequis l'installation de :
 
 * [Docker](https://docs.docker.com/engine/installation/)
 * [docker-compose](https://docs.docker.com/compose/install/)
-* [node.js][nodejs], [npm][npm], [Antidote](https://antidotedb.gitbook.io/documentation/quickstart).
+* [node.js][nodejs]
+* [npm][npm]
+* [Antidote](https://antidotedb.gitbook.io/documentation/quickstart).
 
 et la récupération du projet :
 
@@ -49,11 +51,11 @@ et la récupération du projet :
 ### 1.2 Configuration
 A la racine du projet, lancer sa construction : `make` (or `npm install`).  
 
-Le lancement d'un cluster local de _Docker containers_: `make run`.  
-
 Pour pouvoir lancer le déploiement en local d'AntidoteDB, modifiez le fichier docker/docker-antidote.yml` pour déclarer une troisième instance de base _AntidoteDB_.
 
 Modifier le fichier de configuration d'AntidoteDB (`./config.js`) pour déclarer cette troisième instance.
+
+Le lancement d'un cluster local de _Docker containers_: `make run`.  
 
 Une fois les fichiers modifiés, lancer le déploiement  _via_ la commande `docker-compose -f docker/docker-antidote.yml up`.
 
@@ -125,6 +127,11 @@ L'application est accessible ici : [http://localhost:3000/tasks](http://localhos
 **Au niveau de l'interface graphique**
 * Afficher les listes de tâches sur l'interface _via_ la fonction `renderList` (en ayant pensé à supprimer le code exemple).
 * Implémenter toutes les fonctionnalités pour une visualisation et un usage graphique du _scrum board_.
+
+Vous pourrez alors avoir un rendu de la forme :
+[scrum board](./images/scrum_board.png)
+
+
 
 ### Resources utiles:
 * [API](API.md)
