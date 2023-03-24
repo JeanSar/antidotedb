@@ -16,14 +16,6 @@ services:
       NODE_NAME: "antidote@antidote2"
       SHORT_NAME: "true"
       
-
-
-
-
-
-
-
-
   link:
     image: erlang:21
     volumes:
@@ -31,5 +23,4 @@ services:
     command: 'escript /tmp/connect.erl'
     links:
       - antidote1
-      - antidote2
-      - antidote3
+      - antidote2s

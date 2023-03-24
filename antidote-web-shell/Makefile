@@ -14,10 +14,10 @@ start-server-testenv:
 	PORT=3000 NODE_ENV=production npm start > webshell.log 2>&1
 
 start-docker:
-	docker-compose -f docker/docker-antidote-3dcs.yml up -d
+	docker-compose -f docker/docker-antidote.yml up -d
 
 stop-docker:
-	docker-compose -f docker/docker-antidote-3dcs.yml down
+	docker-compose -f docker/docker-antidote.yml down
 
 clean: stop-docker
 	npm run clean
