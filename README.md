@@ -1,15 +1,15 @@
 # TP CRDTs : réalisation d'un Scrum Task Board _via_ AntidoteDB 
 
-L'objectif de ce TP est de vous familiariser avec une solution basée sur les CRDTs ([Conflict-free Replicated Data Types](https://hal.inria.fr/inria-00609399v1/document)) à travers le développement d'une applicaton de gestion de tâches. 
+L'objectif de ce TP est de vous familiariser avec une solution basée sur les CRDTs ([Conflict-free Replicated Data Types](https://hal.inria.fr/inria-00609399v1/document)) à travers le développement d'une applicaton de gestion de tâches basée du [AntidoteDB](https://www.antidotedb.eu/). 
+
 Cette application se présentera sous la forme d'une application Web permettant de visualiser et modifier des tâches à travers un 'Scrum Board'.
 
-
-Pour réaliser cette application, vous réaliserez dans un premier temps le tutoriel 'AntidoteDB' qui vous permettra de mettre en place l'environnement nécessaire au développement de l'application
+Pour se focaliser sur les principes, et éviter les potentiels problèmes de déploiements sur plusieurs VMs, vous travaillerez sous Dockers. 
 
 
 # 1. Mise en place des instances d'AntidoteDB
 
-Ce tutoriel vous permettra de mettre en place des instances de bases [AntidoteDB](https://www.antidotedb.eu/) _via_ une de ses API, en l'occurence l'API Javascript. 
+Cette partie vous permettra de mettre en place des instances de bases [AntidoteDB](https://www.antidotedb.eu/).
 
 Nous souhaitons déployer la configuration illustrée comme suit :
 
