@@ -119,7 +119,7 @@ Maintenant que vous maîtrisez AntidoteDB, vous allez vous attaquer à la couche
 - **Un statut** :'todo', 'doing', 'done',
 - **Un utilisateur en charge de la tâche** que l'on supposera être une chaine de caractères contenant le nom et le prénom de l'utilisateur.
 
-Servez-vous du code fourni comme point de départ dans les fichiers [server file](app.js) et [client file](public/js/script-tasks.js) pour implémenter les fonctionnalités suivantes:
+Servez-vous du code fourni comme point de départ dans les fichiers [server file](./antidote-web-shell/app.js) et [client file](./antidote-web-shell/public/js/script-tasks.js) pour implémenter les fonctionnalités suivantes:
 
 * Ajouter une nouvelle commande `tasks add` qui prend un titre de tâche (qui est supposé unique), description de tâche, un niveau de priorité ('low', 'medium', 'high'), une deadline, un statut et un utilisateur comme argument et crée une nouvelle tâche dans la base,
 * Ajouter une nouvelle commande `tasks get` qui prend un titre de tâche en argument et qui affiche les informations sur la tâche,
