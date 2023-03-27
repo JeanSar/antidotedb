@@ -1,5 +1,7 @@
 'use strict';
 
+const compose_cmd = 'docker compose'
+
 const antidote = require('antidote_ts_client');
 const express = require('express');
 const path = require('path');
@@ -149,12 +151,12 @@ apiRouter.route('/:rep_id/tasks/:list_id/:task_id')
 const command = (type, param) => {
     switch (type) {
         case 'ispart':
-            return `docker-compose -f docker/docker-antidote-3dcs.yml exec --privileged antidote${param} bash -c 'iptables -L -n -v'`
+            return `${compose_cmd} -f docker/docker-antidote-3dcs.yml exec --privileged antidote${param} bash -c 'iptables -L -n -v'`
         case 'create':
-            return `docker-compose -f docker/docker-antidote-3dcs.yml exec -d --privileged antidote${param} bash -c \
+            return `${compose_cmd} -f docker/docker-antidote-3dcs.yml exec -d --privileged antidote${param} bash -c \
             'iptables -A INPUT -p tcp --dport 8086 -j DROP; iptables -A OUTPUT -p tcp --dport 8086 -j DROP';`;
         case 'remove':
-            return `docker-compose -f docker/docker-antidote-3dcs.yml exec -d --privileged antidote${param} bash -c \
+            return `${compose_cmd} -f docker/docker-antidote-3dcs.yml exec -d --privileged antidote${param} bash -c \
             'iptables -D INPUT -p tcp --dport 8086 -j DROP; iptables -D OUTPUT -p tcp --dport 8086 -j DROP';`
     }
 
@@ -179,6 +181,9 @@ apiRouter.route('/:rep_id/part')
                         log('Partition replica', repId);
                         partitionInfo.set(repId, false);
                         res.json({ status: 'OK', rep: repId });
+                    } else {
+                        log('Erreur dans create partition');
+                        res.status(500).json({status:'Failed', rep: repId});
                     }
                 });
         }
@@ -196,6 +201,9 @@ apiRouter.route('/:rep_id/part')
                         log('Remove partition over replica', repId);
                         partitionInfo.set(repId, true);
                         res.json({ status: 'OK', rep: repId });
+                    } else {
+                        log('Erreur dans remove partition');
+                        res.status(500).json({status:'Failed', rep: repId});
                     }
                 });
         }
