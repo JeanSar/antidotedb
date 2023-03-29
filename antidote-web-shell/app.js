@@ -151,12 +151,12 @@ apiRouter.route('/:rep_id/tasks/:list_id/:task_id')
 const command = (type, param) => {
     switch (type) {
         case 'ispart':
-            return `${compose_cmd} -f docker/docker-antidote-3dcs.yml exec --privileged antidote${param} bash -c 'iptables -L -n -v'`
+            return `${compose_cmd} -f docker/docker-antidote.yml exec --privileged antidote${param} bash -c 'iptables -L -n -v'`
         case 'create':
-            return `${compose_cmd} -f docker/docker-antidote-3dcs.yml exec -d --privileged antidote${param} bash -c \
+            return `${compose_cmd} -f docker/docker-antidote.yml exec -d --privileged antidote${param} bash -c \
             'iptables -A INPUT -p tcp --dport 8086 -j DROP; iptables -A OUTPUT -p tcp --dport 8086 -j DROP';`;
         case 'remove':
-            return `${compose_cmd} -f docker/docker-antidote-3dcs.yml exec -d --privileged antidote${param} bash -c \
+            return `${compose_cmd} -f docker/docker-antidote.yml exec -d --privileged antidote${param} bash -c \
             'iptables -D INPUT -p tcp --dport 8086 -j DROP; iptables -D OUTPUT -p tcp --dport 8086 -j DROP';`
     }
 

@@ -15,12 +15,21 @@ services:
     environment:
       NODE_NAME: "antidote@antidote2"
       SHORT_NAME: "true"
-      
+  
+  antidote3:
+    image: itoumlilt/antidotedb:v0.2.0-alpine-iptables
+    ports:
+     - "127.0.0.1:8089:8087"
+    environment:
+      NODE_NAME: "antidote@antidote3"
+      SHORT_NAME: "true"
+
   link:
     image: erlang:21
     volumes:
       - .:/tmp
-    command: 'escript /tmp/connect.erl'
+    command: 'sh -c "while ! escript /tmp/connect.erl; do sleep 1; done"'
     links:
       - antidote1
       - antidote2
+      - antidote3

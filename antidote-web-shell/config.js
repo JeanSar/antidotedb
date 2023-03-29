@@ -7,6 +7,10 @@ const config = {
         {
             host: 'localhost',
             port: 8088
+        },
+        {
+            host: 'localhost',
+            port: 8089
         }
     ]
 };
