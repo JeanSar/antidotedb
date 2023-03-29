@@ -23,4 +23,4 @@ services:
     command: 'escript /tmp/connect.erl'
     links:
       - antidote1
-      - antidote2s
+      - antidote2
