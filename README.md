@@ -59,7 +59,7 @@ Modifier le fichier de configuration d'AntidoteDB (`./config.js`) pour déclarer
 
 Le lancement d'un cluster local de _Docker containers_: `make run`.  
 
-Une fois les fichiers modifiés, lancer le déploiement  _via_ la commande `docker-compose -f docker/docker-antidote.yml up`.
+Une fois les fichiers modifiés, lancer le déploiement  _via_ la commande `docker-compose -f docker/docker-antidote.yml up` ou `docker compose -f docker/docker-antidote.yml up` en fonction de votre distribution.
 
 Lancer ensuite le serveur Web _via_ la commande `DEBUG=antidote-web-shell:* npm start`.
 Si tout s'est bien passé, vous devrier avoir l'affichage suivant à l'adresse  `localhost:3000`:
