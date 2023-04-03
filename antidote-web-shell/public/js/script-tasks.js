@@ -8,10 +8,10 @@ const POLLING_INTERVAL = 5000; // -1 == OFF
 
 const HELP_MSG = `
 tasks commands:
-    tasks add <tasks_id> <value>
-    tasks remove <tasks_id> <value>
-    tasks get <task_list_id> <tasks_id>
-    tasks list <tasks_list>
+    tasks add <tasks_id> <desc> <priority> <deadline> <statut> <user>
+    tasks remove <tasks_id>
+    tasks get <tasks_id>
+    tasks list
 `;
 
 const CMDS = ['tasks', 'help', 'get', 'add',
@@ -150,16 +150,45 @@ function evalAtdCmd(cmd, term) {
         case "tasks":
             switch (args[1]) {
                 case "get":
-                    terms[tid].echo("Not implemented yet");
+                    $.ajax({
+                        url: '/api/' + (tid + 1) + '/' + args[0] + '/' + args[2],
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (res) {
+                            terms[tid].echo(JSON.stringify(res.cont));
+                        }
+                    });
                     break;
                 case "add":
-                    terms[tid].echo("Not implemented yet");
+                    $.ajax({
+                        url: '/api/' + (tid + 1) + '/' + args[0] + '/' + args[2],
+                        type: 'PUT',
+                        data: 'desc=' + (args.length > 3 ? args[3] : '')
+                            + '&priority=' + (args.length > 4 ? args[4] : 'low')
+                            + '&deadline=' + (args.length > 5 ? args[5] : '')
+                            + '&statut=' + (args.length > 6 ? args[6] : 'todo')
+                            + '&user=' + (args.length > 7 ? args[7] : 'user' + (tid+1)),
+                        dataType: 'json',
+                        success: okErrOutput
+                    });
                     break;
                 case "remove":
-                    terms[tid].echo("Not implemented yet");
+                    $.ajax({
+                        url: '/api/' + (tid + 1) + '/' + args[0] + '/' + args[2],
+                        type: 'DELETE',
+                        dataType: 'json',
+                        success: okErrOutput
+                    });
                     break;
                 case "list":
-                    terms[tid].echo("Not implemented yet");
+                    $.ajax({
+                        url: '/api/' + (tid + 1) + '/' + args[0],
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (res) {
+                            terms[tid].echo(JSON.stringify(res.cont));
+                        }
+                    });
                     break;
                 default:
                     terms[tid].echo(UNKNOWN_MSG);

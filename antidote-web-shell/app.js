@@ -14,6 +14,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 
 const conf = require('./config');
+const { stringify } = require('querystring');
 
 const DEBUG = true;
 function log(...args) {
@@ -127,25 +128,56 @@ apiRouter.route('/:rep_id/count/:counter_id')
 
 
 // Tasks list API
-apiRouter.route('/:rep_id/tasks/:list_id')
+apiRouter.route('/:rep_id/tasks')
     .get(function (req, res) {
-        // TODO: implement
-        res.json({ status: 'TODO', cont: 'Implement logic' });
+        let repId = parseInt(req.params.rep_id);
+        atdClis[repId-1].rrmap("tasks").read().then(content => {
+            let obj = content.toJsObject();
+            log('Get all tasks from replica', repId, ' ; ', obj);
+            res.json({ status: 'OK', cont: obj });
+        });
     });
 
 // Tasks API
-apiRouter.route('/:rep_id/tasks/:list_id/:task_id')
+apiRouter.route('/:rep_id/tasks/:task_id')
     .get(function (req, res) {
-        // TODO: implement
-        res.json({ status: 'TODO', cont: 'Implement logic' });
+        let repId = parseInt(req.params.rep_id);
+        let taskId = req.params.task_id;
+        atdClis[repId-1].rrmap("tasks").rrmap(taskId).read().then(content => {
+            let obj = content.toJsObject();
+            log('Get tasks ', taskId,' from replica', repId, ' ; ', obj);
+            res.json({ status: 'OK', cont: obj});
+        });
     })
     .put(function (req, res) {
-        // TODO: implement
-        res.json({ status: 'TODO', cont: 'Implement logic' });
+        let repId = parseInt(req.params.rep_id);
+        let taskId = req.params.task_id;
+        let desc = req.body.desc;
+        let priority = req.body.priority;
+        let deadline = req.body.deadline;
+        let statut = req.body.statut;
+        let user = req.body.user;
+        atdClis[repId-1].update([
+            atdClis[repId-1].rrmap("tasks").rrmap(taskId).register("desc").set(desc),
+            atdClis[repId-1].rrmap("tasks").rrmap(taskId).register("priority").set(priority),
+            atdClis[repId-1].rrmap("tasks").rrmap(taskId).register("deadline").set(deadline),
+            atdClis[repId-1].rrmap("tasks").rrmap(taskId).register("statut").set(statut),
+            atdClis[repId-1].rrmap("tasks").rrmap(taskId).register("user").set(user)
+        ]).then(resp => {
+            log('Add new task ', taskId, ' on replica ', repId)
+            res.json({ status: 'OK' });
+        });
     })
     .delete(function (req, res) {
-        // TODO: implement
-        res.json({ status: 'TODO', cont: 'Implement logic' });
+        let repId = parseInt(req.params.rep_id);
+        let taskId = req.params.task_id;
+
+        atdClis[repId-1].update(
+            atdClis[repId-1].rrmap("tasks").remove(atdClis[repId-1].rrmap("tasks").rrmap(taskId))
+        ).then(resp => {
+            log('Remove task ', taskId, ' on replica ', repId)
+            res.json({ status: 'OK' });
+        });
     });
 
 const command = (type, param) => {

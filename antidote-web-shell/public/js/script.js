@@ -1,3 +1,4 @@
+// Constantes
 const NUM_TERMS = 3;
 
 const OK_MSG = 'OK';
